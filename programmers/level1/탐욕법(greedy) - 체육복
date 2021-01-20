@@ -1,0 +1,65 @@
+#점심시간에 도둑이 들어, 일부 학생이 체육복을 도난당했습니다. 다행히 여벌 체육복이 있는 학생이 이들에게 체육복을 빌려주려 합니다. 
+#학생들의 번호는 체격 순으로 매겨져 있어, 바로 앞번호의 학생이나 바로 뒷번호의 학생에게만 체육복을 빌려줄 수 있습니다. 
+#예를 들어, 4번 학생은 3번 학생이나 5번 학생에게만 체육복을 빌려줄 수 있습니다. 
+#체육복이 없으면 수업을 들을 수 없기 때문에 체육복을 적절히 빌려 최대한 많은 학생이 체육수업을 들어야 합니다.
+#전체 학생의 수 n, 체육복을 도난당한 학생들의 번호가 담긴 배열 lost, 여벌의 체육복을 가져온 학생들의 번호가 담긴 배열 reserve가 매개변수로 주어질 때, 
+#체육수업을 들을 수 있는 학생의 최댓값을 return 하도록 solution 함수를 작성해주세요.
+
+
+def solution(n, lost, reserve):
+    list0 = [] # 양 옆에 아무도 여분 X
+    list1 = [] # 양 옆에 여분 왼/오 中 1명
+    list2 = [] # 양 옆 모두(2명) 여분 O
+
+    for x in lost:
+        if (x in reserve):
+            reserve[reserve.index(x)]='@'
+            lost[lost.index(x)]='@'
+    
+    lost = list(filter(lambda x : x!='@',lost))
+    reserve = list(filter(lambda x : x!='@',reserve))
+
+    for i in lost:
+        if (i-1 in reserve):
+            if (i+1 in reserve):
+                list2.append(i)
+            else:
+                list1.append(i)
+
+        elif (i+1 in reserve):
+            if (i-1 in reserve):
+                continue
+            else:
+                list1.append(i)
+
+        else:
+            list0.append(i)
+
+
+    for j in list1:
+        if (j-1 in reserve):
+            list1[list1.index(j)]='@'
+            reserve[reserve.index(j-1)]='@'
+            continue
+        elif (j+1 in reserve):
+            list1[list1.index(j)] = '@'
+            reserve[reserve.index(j+1)] = '@'
+            continue
+
+
+    for h in list2:
+        if (h-1 in reserve):
+            list2[list2.index(h)] = '@'
+            reserve[reserve.index(h-1)] = '@'
+            continue
+        elif (h+1 in reserve):
+            list2[list2.index(h)] = '@'
+            reserve[reserve.index(h+1)] = '@'
+            continue
+
+
+    list1 = list(filter(lambda x : x!='@', list1))
+    list2 = list(filter(lambda x: x != '@', list2))
+
+    no = len(list0)+len(list1)+len(list2)
+    return n-no
