@@ -1,0 +1,75 @@
+#You are training for a programming contest with your team members Alice and Bob. After some hours of hard training you want to have a break and eat pizza. 
+#You decided to order a big pizza for all three of you. But you have to choose the kind of pizza you want to eat.
+#You know your favorite kind. But Alice and Bob have other constraints: Alice is on a diet so she wants a pizza with less calories as possible. 
+#Bob is just mean to Alice so he votes for as much calories as possible.
+#You decide to vote on which kind of pizza you order. As voting for one pizza wouldn’t lead anywhere, you decide to use a veto voting. 
+#So everyone of you veto on pizza in a round robin manner. First Alice vetos one pizza, then Bob vetos one, at last you are allowed to veto. 
+#Then Alice has the next veto again, then Bob etc. until only one pizza is left.
+#Reminder: Alice will always veto the pizza with the most calories. Bob vetos always the pizza with least calories. 
+#You try to be clever in such a way that your favorite pizza is the remaining pizza.
+
+
+method 1)
+n, p = map(int, input().split())
+pizza = []
+for i in range(n):
+    pizza.append(list((input().split())))
+    pizza[i][0] = int(pizza[i][0])
+pizza = [pizza]
+me = pizza[0][p-1]
+
+
+def mypizza(x):
+    mychoice = []
+    for i in x:
+        for j in range(len(i)):
+                if len(i)>2:
+                    mychoice.append(i[:j]+i[j+1:])
+                else:
+                    mychoice.append(i)
+    return mychoice
+
+last = []
+while len(last)==0:
+    for i in pizza:
+        if len(i)>1:
+            i.remove(i[len(i)-1])
+        else:
+            last.append(i[0])
+
+    for j in pizza:
+        if len(j)>1:
+            j.remove(j[0])
+        else:
+            last.append(j[0])
+
+    result = mypizza(pizza)
+    pizza = result
+
+if me in last:
+    print("Yes")
+else:
+    print("No")
+    
+    
+    
+method 2)
+n, p = map(int, input().split())
+pizza = []
+for i in range(n):
+    a, b = input().split()
+    pizza.append(int(a))
+me = pizza[p-1]
+
+if n<=3:
+    print("NO")
+else:
+    if n%3==0:
+        pizza2 = pizza[n//3 : 2*(n//3)]
+    else:
+        pizza2 = pizza[n//3 : 2*(n//3)+1]
+
+    if me in pizza2:
+        print("YES")
+    else:
+        print("NO")
