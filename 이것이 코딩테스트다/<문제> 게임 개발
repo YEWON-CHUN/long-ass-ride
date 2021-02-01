@@ -1,0 +1,42 @@
+N, M = map(int, input().split())  # N.세로 M.가로
+A, B, d = map(int, input().split())  # 0.북쪽 1.동쪽 2.남쪽 3.서쪽
+map1 = list()
+for _ in range(N):
+    map1.append(list(input().split()))
+
+moves = [[A,B]]
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]  # 순서대로 북/동/남/서
+
+cnt = 0
+while True:
+    if d == 0:
+        d = 3
+    else:
+        d -= 1
+
+    A2 = A + dx[d]
+    B2 = B + dy[d]
+    k = map1[A2][B2]
+
+    if (k == '1') or ([A2, B2] in moves):
+        cnt += 1
+        if cnt == 4:
+            A = A - dx[d]
+            B = B - dy[d]
+            if map1[A][B] == '0':
+                break
+            else:
+                cnt = 0
+                continue
+
+        else:
+            continue
+    else:
+        A = A2
+        B = B2
+        moves.append([A, B])
+        cnt = 0
+        continue
+
+print(len(moves))
