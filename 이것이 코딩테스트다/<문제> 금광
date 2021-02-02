@@ -4,7 +4,7 @@ for _ in range(T):
     ilist = list(map(int, input().split()))  # ilist에 금의 갯수 입력
     newlist = []
     for k in range(m):
-        newlist.append(ilist[k::4])  # dp 꼴에 맞추어 ilist -> newlist로 
+        newlist.append(ilist[k::n+1])  # dp 꼴에 맞추어 ilist -> newlist로 
     d = list([0] * n for _ in range(m))  # dp 생성
 
     for i in range(m):
