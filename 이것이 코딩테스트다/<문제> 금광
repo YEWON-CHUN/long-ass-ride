@@ -1,0 +1,21 @@
+T = int(input())
+for _ in range(T):
+    n, m = map(int, input().split())  # n은 세로줄 / m은 가로줄
+    ilist = list(map(int, input().split()))  # ilist에 금의 갯수 입력
+    newlist = []
+    for k in range(m):
+        newlist.append(ilist[k::4])  # dp 꼴에 맞추어 ilist -> newlist로 
+    d = list([0] * n for _ in range(m))  # dp 생성
+
+    for i in range(m):
+        for j in range(n):
+            if i == 0:
+                d[i][j] = newlist[i][j]
+            else:
+                if j == 0:
+                    d[i][j] = max(d[i-1][j], d[i-1][j+1]) + newlist[i][j]  # 왼쭉 아래 / 왼쪽
+                elif j == n-1:
+                    d[i][j] = max(d[i-1][j], d[i-1][j-1]) + newlist[i][j]  # 왼쪽 위 / 왼쪽
+                else:
+                    d[i][j] = max(d[i-1][j-1], d[i-1][j], d[i-1][j+1]) + newlist[i][j]  # 왼쪽 위 / 왼쪽 아래 / 왼쪽
+    print(max(d[m-1]))  # dp 마지막 index에서 최댓값
