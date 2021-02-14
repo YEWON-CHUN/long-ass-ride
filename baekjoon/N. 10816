@@ -1,7 +1,7 @@
 #숫자 카드는 정수 하나가 적혀져 있는 카드이다. 상근이는 숫자 카드 N개를 가지고 있다. 
 #정수 M개가 주어졌을 때, 이 수가 적혀있는 숫자 카드를 상근이가 몇 개 가지고 있는지 구하는 프로그램을 작성하시오.
 
-
+method 1) 병합 정렬, 이진 탐색 - lower bound / upper bound
 import sys
 N = int(sys.stdin.readline())
 card = list(map(int, sys.stdin.readline().split()))
@@ -59,3 +59,16 @@ def upper(list, key):
 for i in k:
     result = upper(card2, i) - lower(card2, i)
     print(result, end=' ')
+    
+    
+    
+method 2) collections 모듈 Counter 이용
+
+import sys
+from collections import Counter
+N = int(sys.stdin.readline())
+card = Counter(map(int, sys.stdin.readline().split()))
+m = int(input())
+key = list(map(int, sys.stdin.readline().split()))
+for i in key:
+    print(card[i], end =' ')
