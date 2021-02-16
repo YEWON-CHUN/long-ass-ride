@@ -1,0 +1,56 @@
+# https://www.acmicpc.net/problem/18428
+
+
+import itertools
+import copy
+
+N = int(input())
+graph = []
+for i in range(N):
+    graph.append(list(input().strip().split()))
+
+available = []
+for x in range(N):
+    for y in range(N):
+        if graph[x][y] == 'X':
+            available.append([x, y])
+
+case = list(itertools.combinations(available, 3))
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+result = []
+for i in case:
+    test = copy.deepcopy(graph)
+    for j in i:
+        test[j[0]][j[1]] = 'O'
+    tf = False
+
+    for x in range(N):
+        for y in range(N):
+            if test[x][y] == 'S':
+                a, b = x, y
+                for k in range(4):
+                    while True:
+                        nx = x + dx[k]
+                        ny = y + dy[k]
+                        if 0 <= nx < N and 0 <= ny < N:
+                            if test[nx][ny] == 'O':
+                                x, y = a, b
+                                break
+                            elif test[nx][ny] == 'T':
+                                x, y = a, b
+                                tf = True
+                                break
+                            else:
+                                x, y = nx, ny
+                                continue
+                        else:
+                            x, y = a, b
+                            break
+            else:
+                continue
+    if tf is False:
+        print('YES')
+        quit()
+print('NO')
