@@ -1,0 +1,39 @@
+# https://www.acmicpc.net/problem/2667
+
+
+N = int(input())
+
+graph = []
+for i in range(N):
+    graph.append(list(map(int, input())))
+
+
+def dfs(x, y):
+    global house
+    if x <= -1 or N <= x or y <= -1 or N <= y:
+        return False
+    if graph[x][y] != 0:
+        graph[x][y] = 0
+        dfs(x - 1, y)
+        dfs(x + 1, y)
+        dfs(x, y - 1)
+        dfs(x, y + 1)
+        house += 1
+        return True
+    return False
+
+
+result = 0
+num = []
+for j in range(N):
+    for h in range(N):
+        house = 0
+        if dfs(j,h) == True:
+            num.append(house)
+            result += 1
+
+print(result)
+
+num.sort()
+for t in num:
+    print(t)
