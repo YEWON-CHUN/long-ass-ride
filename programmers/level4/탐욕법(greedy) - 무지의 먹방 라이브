@@ -1,0 +1,52 @@
+(1)
+def solution(food_times, k):
+    n = len(food_times)
+    if k < min(food_times) * n:
+        return k % n + 1
+    else:
+        k = k - (min(food_times) * n)
+        food_times = list(map(lambda x: x - min(food_times), food_times))
+        all = sum(food_times)
+        if k >= all:
+            return -1
+        else:
+            key = 0
+            while k > -1:
+                i = key % n
+                if food_times[i] != 0:
+                    food_times[i] -= 1
+                    k -= 1
+                key += 1
+            return  i + 1
+            
+            
+(2)
+import heapq
+
+def solution(food_times, k):
+    if sum(food_times) <= k:
+        return -1
+    # 먹으려는 음식보다 k의 값이 크거나 같다면, k초 후 먹을 수 있는 음식이 없으므로 -1 출력
+
+    q = []
+    for i in range(len(food_times)):
+        heapq.heappush(q, (food_times[i], i+1))
+        # q라는 이름의 힙에 ( i번 음식을 먹는 데 소요되는 시간, i번 음식의 번호) 입력
+
+    sum_value = 0
+    # 음식을 먹는 데 여태까지 소요된 시간
+    previous = 0
+    # 직전에 다쳐먹은 음식의 길이 (?)
+    length = len(food_times)
+    # 남은 음식의 개수
+
+    while sum_value + ((q[0][0] - previous) * length) <= k:
+        now = heapq.heappop(q)[0]
+        # 이번에 먹을 음식에 소요되는 시간
+        sum_value += (now - previous) * length
+        length -= 1
+        previous = now
+
+    result = sorted(q, key = lambda x: x[1]) 
+    # 쳐먹는데 시간이 적게 걸리는 음식 순서로 정렬되어있던 힙을 음식의 번호 기준으로 재정렬
+    return result[(k - sum_value) % length][1]
