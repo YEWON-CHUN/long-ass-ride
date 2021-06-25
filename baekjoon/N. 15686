@@ -1,0 +1,32 @@
+# https://www.acmicpc.net/problem/15686
+
+import itertools
+N, M = map(int, input().split())
+house = []
+chicken = []
+for i in range(N):
+    town = list(map(int, input().split()))
+    for j in range(N):
+        if town[j] == 1:
+            house.append([i, j])
+        elif town[j] == 2:
+            chicken.append([i, j])
+
+length = []
+for c in chicken:
+    length2 = []
+    for h in house:
+        l = abs(c[0] - h[0]) + abs(c[1] - h[1])
+        length2.append(l)
+    length.append(length2)
+
+
+case = itertools.combinations(length, M)
+result = 100000000000000000
+for c in case:
+    cnt = 0
+    for x in range(len(house)):  # 각 집마다 가장 길이가 짧은 경우 탐색
+        cnt += min(map(lambda k: k[x], c))
+    if cnt < result:
+        result = cnt
+print(result)
