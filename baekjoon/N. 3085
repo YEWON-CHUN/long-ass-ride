@@ -1,0 +1,41 @@
+https://www.acmicpc.net/problem/3085
+
+N = int(input())
+candy = []
+for _ in range(N):
+    candy.append(list(input()))
+
+dx = [1, -1, 0, 0]  # 동서남북
+dy = [0, 0, 1, -1]
+biggest = 0
+
+for y in range(N):
+    for x in range(N):
+        for n in range(4):  # 교환할 돌의 위치 정하기
+            nx = x + dx[n]
+            ny = y + dy[n]
+            if N > nx >= 0 and N > ny >= 0: # 교환할 돌이 범위 내인 경우
+                if candy[y][x] != candy[ny][nx]:  # 다른돌인경우
+                    candy[y][x], candy[ny][nx] = candy[ny][nx], candy[y][x] # 돌 교환!!!
+                cnt_list = []  # 세팅후 동서남북으로 개수를 세서 저장할 리스트 초기화
+                for l in range(4):  # 동서남북으로 이제 개수를 셀 거예요
+                    cnt = 0
+                    lx, ly = x, y  # 이동할 칸 좌표 초기화
+                    while True:
+                        lx += dx[l]
+                        ly += dy[l]
+                        if (0 <= lx < N) and (0 <= ly < N):  # 이동한 칸이 범위 이내이면서
+                            if candy[ly][lx] == candy[y][x]:  # 그 칸의 돌이 원래 칸과 같을때
+                                cnt += 1  # 개수 + 1
+                                continue
+                            else:  # 원래 칸과 다른 돌이면 break하고 다른 방향으로 탐색 시작
+                                break
+                        else:  # 이동한 칸이 범위 밖이라면 break하고 다른 방향으로 탐색 시작
+                            break
+                    cnt_list.append(cnt)  # 동서남북 네개 저장!!
+                biggest = max(biggest, sum(cnt_list[:2]), sum(cnt_list[2:]))
+                candy[y][x], candy[ny][nx] = candy[ny][nx], candy[y][x]
+            else:
+                continue
+
+print(biggest + 1)
