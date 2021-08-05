@@ -1,0 +1,41 @@
+import itertools
+import copy
+
+
+# https://www.acmicpc.net/problem/14502
+
+def dfs(x, y):
+    if x <= -1 or x >= N or y <= -1 or y >= M:
+        return False
+    if graph[x][y] == 0 or graph[x][y] == 2:
+        graph[x][y] = 1
+        dfs(x - 1, y)
+        dfs(x + 1, y)
+        dfs(x, y - 1)
+        dfs(x, y + 1)
+        return True
+    return False
+
+
+N, M = map(int, input().split())
+graph = []
+
+for _ in range(N):
+    graph.append(list(map(int, input().split())))
+sub = copy.deepcopy(graph)
+
+maps = list(itertools.combinations(list(filter(lambda x: graph[x[0]][x[1]] == 0, [[x, y] for x in range(N) for y in range(M)])), 3))
+result = 0
+
+for i in maps:
+    sub = copy.deepcopy(graph)
+    for j in i:
+        graph[j[0]][j[1]] = 1
+    for x in range(N):
+        for y in range(M):
+            if graph[x][y] == 2:
+                dfs(x, y)
+    result = max(sum(map(lambda a: a.count(0), graph)), result)
+    graph, sub = sub, graph
+
+print(result)
